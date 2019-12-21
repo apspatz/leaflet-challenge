@@ -6,7 +6,7 @@ var limit = '2000';
 var orderby = 'magnitude';
 var geolink = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${starttime}&latitude=${latitude}&longitude=${longitude}&maxradiuskm=${maxrad}&limit=${limit}&orderby=${orderby}`;
 
-var tectlink = 'static\data\tectonicplates-master\GeoJSON\PB2002_boundaries.json'
+var tectlink = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json'
 
 d3.json(geolink, function(EQdata){
     console.log(EQdata);
@@ -76,18 +76,21 @@ function createMarkers(EQdata){
       console.log(weakEQ);
       console.log(midEQ);
       console.log(strongEQ);
-            
+      
+      var teclayer = L.geoJSON(tPlates);
+
       var overlayMaps = {
         'Weak Earthquakes': createMarkers(weakEQ),
         'Medium Earthquakes': createMarkers(midEQ),
-        'Strong Earthquakes': createMarkers(strongEQ)
+        'Strong Earthquakes': createMarkers(strongEQ),
+        'Tectonic Plates': teclayer
       };
     
       // Create our map, giving it the streetmap and earthquakes layers to display on load
       var myMap = L.map("map", {
         center: [latitude, longitude],
         zoom: 4,
-        layers: [lightmap]
+        layers: [lightmap, teclayer]
       });
     
       // Create a layer control
