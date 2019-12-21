@@ -6,9 +6,14 @@ var limit = '2000';
 var orderby = 'magnitude';
 var geolink = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${starttime}&latitude=${latitude}&longitude=${longitude}&maxradiuskm=${maxrad}&limit=${limit}&orderby=${orderby}`;
 
-d3.json(geolink, function(data){
-    console.log(data);
-    createMap(data.features);
+var tectlink = 'static\data\tectonicplates-master\GeoJSON\PB2002_boundaries.json'
+
+d3.json(geolink, function(EQdata){
+    console.log(EQdata);
+    d3.json(tectlink, function(tecdata){
+      console.log(tecdata);
+      createMap(EQdata.features, tecdata.features);
+    })
 })
 
 function styles(mag){
@@ -38,7 +43,7 @@ function createMarkers(EQdata){
       return earthquakes;
     }
     
-    function createMap(earthquakes) {
+    function createMap(earthquakes, tPlates) {
     
       // Define streetmap and darkmap layers
       var lightmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
