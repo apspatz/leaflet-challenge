@@ -100,6 +100,7 @@ function createMarkers(EQdata){
     // When the layer control is added, insert a div with the class of "legend"
     info.onAdd = function() {
     var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h2>Western Pacific Earthquakes since November 2019</h2>"
     return div;
     };
     // Add the info legend to the map
